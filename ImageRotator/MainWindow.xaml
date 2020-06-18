@@ -5,7 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageRotator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Icon="logo.png"
+        Title="英捷特科技 图片旋转工具" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="buttonstyle" TargetType="Button">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="MinWidth" Value="50"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+        </Style>
+        <Style x:Key="txtstyle" TargetType="TextBox">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="MinWidth" Value="200"></Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -17,14 +29,20 @@
             <ColumnDefinition Width="4*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBox IsReadOnly="True"></TextBox>
-        <Button x:Name="btnOpen" Grid.Column="1" Click="btnOpen_Click">打开图片</Button>
+        <TextBox IsReadOnly="True" Style="{StaticResource txtstyle}"></TextBox>
+        <Button x:Name="btnOpen" Grid.Column="1" Click="btnOpen_Click"
+                Style="{StaticResource buttonstyle}">打开图片</Button>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <Image Name="img" Stretch="None" Source="{Binding EditedImage.Image}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Image Name="img" Stretch="None" Source="{Binding EditedImage.Image}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Image.RenderTransform>
+                    <RotateTransform Angle="45" />
+                </Image.RenderTransform>
+            </Image>
         </ScrollViewer>
-       
-        <Slider x:Name="sldAngle" Minimum="-359" Maximum="359" Grid.Row="2"></Slider>
-        <Button x:Name="btnSave"   Grid.Row="2" Grid.Column="1">打开图片</Button>
+
+        <Slider x:Name="sldAngle" Minimum="-179" Maximum="179" Grid.Row="2" Value="0" ValueChanged="sldAngle_ValueChanged" ></Slider>
+        <Button x:Name="btnSave"   Grid.Row="2" Grid.Column="1" Click="btnSave_Click"
+                Style="{StaticResource buttonstyle}">保存图片</Button>
 
         <TextBox x:Name="txtMsg" Grid.Row="3"></TextBox>
     </Grid>
