@@ -7,6 +7,25 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBox IsReadOnly="True"></TextBox>
+        <Button x:Name="btnOpen" Grid.Column="1" Click="btnOpen_Click">打开图片</Button>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Image Name="img" Stretch="None" Source="{Binding EditedImage.Image}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        </ScrollViewer>
+       
+        <Slider x:Name="sldAngle" Minimum="-359" Maximum="359" Grid.Row="2"></Slider>
+        <Button x:Name="btnSave"   Grid.Row="2" Grid.Column="1">打开图片</Button>
+
+        <TextBox x:Name="txtMsg" Grid.Row="3"></TextBox>
     </Grid>
 </Window>

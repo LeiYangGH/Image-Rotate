@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,21 @@ namespace ImageRotator
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void btnOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = false;
+            dialog.Filter = "bmp|*.bmp";
+            if (!dialog.ShowDialog() ?? false)
+                return;
+            string fileName = dialog.FileName;
+            var img = new BitmapImage();
+            img.BeginInit();
+            img.StreamSource = new MemoryStream(File.ReadAllBytes(fileName));
+            img.EndInit();
+            this.img.Source = img;
         }
     }
 }
