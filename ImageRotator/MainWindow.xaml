@@ -32,11 +32,8 @@
         <TextBox IsReadOnly="True" Style="{StaticResource txtstyle}"></TextBox>
         <Button x:Name="btnOpen" Grid.Column="1" Click="btnOpen_Click"
                 Style="{StaticResource buttonstyle}">打开图片</Button>
-        <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <Image Name="img" Stretch="None" Source="{Binding EditedImage.Image}" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Image.RenderTransform>
-                    <RotateTransform Angle="45" />
-                </Image.RenderTransform>
+        <ScrollViewer Grid.Row="1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Image Name="img" Stretch="None" Source="{Binding EditedImage.Image}" HorizontalAlignment="Center" VerticalAlignment="Center">
             </Image>
         </ScrollViewer>
 
