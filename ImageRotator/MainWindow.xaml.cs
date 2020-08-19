@@ -88,12 +88,20 @@ namespace ImageRotator
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            double angle = double.Parse(this.txtAngle.Text.Trim());
-            string filename = Path.GetFileNameWithoutExtension(this.inputImageFileName);
-            //SaveClipboardImageToFile(@"C:\Users\LeiYang\Downloads\rotate.bmp");
-            string outputImageFileName = this.inputImageFileName.Replace(filename, filename + $"_旋转{angle}度");
-            SaveToBmp(this.img, outputImageFileName);
-            this.txtMsg.Text = $"已保存到{outputImageFileName}";
+            double angle;
+            if (double.TryParse(this.txtAngle.Text.Trim(), out angle))
+            {
+                string filename = Path.GetFileNameWithoutExtension(this.inputImageFileName);
+                //SaveClipboardImageToFile(@"C:\Users\LeiYang\Downloads\rotate.bmp");
+                string outputImageFileName = this.inputImageFileName.Replace(filename, filename + $"_旋转{angle}度");
+                SaveToBmp(this.img, outputImageFileName);
+                this.txtMsg.Text = $"已保存到{outputImageFileName}";
+            }
+            else
+            {
+                this.txtMsg.Text = $"请输入合法的角度!";
+
+            }
         }
 
 
@@ -121,8 +129,11 @@ namespace ImageRotator
 
         private void txtAngle_TextChanged(object sender, TextChangedEventArgs e)
         {
-            double angle = double.Parse(this.txtAngle.Text.Trim());
-            this.img.RenderTransform = new RotateTransform(angle, this.originalImg.Width / 2, this.originalImg.Height / 2);
+            double angle;
+            if (double.TryParse(this.txtAngle.Text.Trim(), out angle))
+            {
+                this.img.RenderTransform = new RotateTransform(angle, this.originalImg.Width / 2, this.originalImg.Height / 2);
+            }
         }
 
         private readonly Regex _regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text
