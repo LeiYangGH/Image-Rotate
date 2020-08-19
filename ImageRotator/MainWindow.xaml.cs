@@ -106,7 +106,7 @@ namespace ImageRotator
 
 
 
-        void SaveToBmp(FrameworkElement visual, string fileName)
+        void SaveToBmp(Image visual, string fileName)
         {
             var encoder = new BmpBitmapEncoder();
             SaveUsingEncoder(visual, fileName, encoder);
@@ -114,10 +114,20 @@ namespace ImageRotator
 
 
 
-        void SaveUsingEncoder(FrameworkElement visual, string fileName, BitmapEncoder encoder)
+        void SaveUsingEncoder(Image visual, string fileName, BitmapEncoder encoder)
         {
             RenderTargetBitmap bitmap = new RenderTargetBitmap((int)visual.ActualWidth, (int)visual.ActualHeight, 96, 96, PixelFormats.Default);
-            bitmap.Render(visual);
+
+            DrawingVisual drawingVisual = new DrawingVisual();
+            using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+            {
+                VisualBrush visualBrush = new VisualBrush(visual);
+                drawingContext.DrawRectangle(visualBrush, null,
+                  new Rect(new Point(), new Size((int)visual.ActualWidth, (int)visual.ActualHeight)));
+            }
+
+
+            bitmap.Render(drawingVisual);
             BitmapFrame frame = BitmapFrame.Create(bitmap);
             encoder.Frames.Add(frame);
 
