@@ -73,18 +73,18 @@ namespace ImageRotator
         }
 
 
-        public void SaveClipboardImageToFile(string filePath)
-        {
-            //var image = this.originalImg;
-            var image = this.img.Source;
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                BitmapEncoder encoder = new PngBitmapEncoder();
-                //encoder.Frames.Add(BitmapFrame.Create(image));
-                encoder.Frames.Add(BitmapFrame.Create((BitmapSource)img.Source));
-                encoder.Save(fileStream);
-            }
-        }
+        //public void SaveClipboardImageToFile(string filePath)
+        //{
+        //    //var image = this.originalImg;
+        //    var image = this.img.Source;
+        //    using (var fileStream = new FileStream(filePath, FileMode.Create))
+        //    {
+        //        BitmapEncoder encoder = new PngBitmapEncoder();
+        //        //encoder.Frames.Add(BitmapFrame.Create(image));
+        //        encoder.Frames.Add(BitmapFrame.Create((BitmapSource)img.Source));
+        //        encoder.Save(fileStream);
+        //    }
+        //}
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
@@ -108,7 +108,7 @@ namespace ImageRotator
 
         void SaveUsingEncoder(FrameworkElement visual, string fileName, BitmapEncoder encoder)
         {
-            RenderTargetBitmap bitmap = new RenderTargetBitmap((int)visual.ActualWidth, (int)visual.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            RenderTargetBitmap bitmap = new RenderTargetBitmap((int)visual.ActualWidth, (int)visual.ActualHeight, 96, 96, PixelFormats.Default);
             bitmap.Render(visual);
             BitmapFrame frame = BitmapFrame.Create(bitmap);
             encoder.Frames.Add(frame);
