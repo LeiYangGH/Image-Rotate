@@ -32,10 +32,8 @@
         <TextBox IsReadOnly="True" Style="{StaticResource txtstyle}"></TextBox>
         <Button x:Name="btnOpen" Grid.Column="1" Click="btnOpen_Click"
                 Style="{StaticResource buttonstyle}">打开图片</Button>
-        <ScrollViewer Grid.Row="1"   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <Image Name="img" Stretch="None" Source="{Binding EditedImage.Image}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Grid.Row="1"   Name="img" Stretch="None" Source="{Binding EditedImage.Image}" HorizontalAlignment="Center" VerticalAlignment="Center">
             </Image>
-        </ScrollViewer>
 
         <TextBox x:Name="txtAngle" ToolTip="输入角度" MaxLength="5" Grid.Row="2" PreviewTextInput="txtAngle_PreviewTextInput" TextChanged="txtAngle_TextChanged" ></TextBox>
         <Button x:Name="btnSave"   Grid.Row="2" Grid.Column="1" Click="btnSave_Click"

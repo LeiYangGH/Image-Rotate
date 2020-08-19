@@ -47,6 +47,8 @@ namespace ImageRotator
             img.EndInit();
             this.originalImg = img;
             this.img.Source = img;
+            this.img.Width = this.originalImg.Width+ this.originalImg.Height;
+            this.img.Height = this.originalImg.Width + this.originalImg.Height;
         }
 
         private void sldAngle_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -116,21 +118,29 @@ namespace ImageRotator
 
         void SaveUsingEncoder(Image visual, string fileName, BitmapEncoder encoder)
         {
-            RenderTargetBitmap bitmap = new RenderTargetBitmap((int)visual.ActualWidth, (int)visual.ActualHeight, 96, 96, PixelFormats.Default);
+            int hw = (int)Math.Sqrt( Math.Pow( this.originalImg.Width,2)  + Math.Pow(this.originalImg.Height,2));
+            RenderTargetBitmap bitmap = new RenderTargetBitmap(hw, hw, 96, 96, PixelFormats.Default);
 
-            DrawingVisual drawingVisual = new DrawingVisual();
-            using (DrawingContext drawingContext = drawingVisual.RenderOpen())
-            {
-                VisualBrush visualBrush = new VisualBrush(visual);
-                drawingContext.DrawRectangle(visualBrush, null,
-                  new Rect(new Point(), new Size((int)visual.ActualWidth, (int)visual.ActualHeight)));
-            }
+            //using (Graphics bitmapBuffer = Graphics.FromImage(thumbBmp))
+            //{
+            //    Brush brush = new SolidBrush(Color.FromArgb(127, 255, 255, 255);
+            //    bitmapBuffer.FillRectangle(brush, 10, 10, 80, 80);
+            //}
+
+            //DrawingVisual drawingVisual = new DrawingVisual();
+            //using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+            //{
+            //    VisualBrush visualBrush = new VisualBrush(visual);
+            //    drawingContext.DrawRectangle(visualBrush, null,
+            //      new Rect(new Point(), new Size((int)visual.ActualWidth, (int)visual.ActualHeight)));
+            //}
 
 
-            bitmap.Render(drawingVisual);
+            //bitmap.Render(drawingVisual);
+            bitmap.Render(visual);
             BitmapFrame frame = BitmapFrame.Create(bitmap);
             encoder.Frames.Add(frame);
-
+             
             using (var stream = File.Create(fileName))
             {
                 encoder.Save(stream);
