@@ -40,7 +40,7 @@
             </Image>
         </ScrollViewer>
 
-        <Slider x:Name="sldAngle" Minimum="-179" Maximum="179" Grid.Row="2" Value="0" ValueChanged="sldAngle_ValueChanged" ></Slider>
+        <TextBox x:Name="txtAngle" ToolTip="输入角度" MaxLength="5" Grid.Row="2" PreviewTextInput="txtAngle_PreviewTextInput" TextChanged="txtAngle_TextChanged" ></TextBox>
         <Button x:Name="btnSave"   Grid.Row="2" Grid.Column="1" Click="btnSave_Click"
                 Style="{StaticResource buttonstyle}">保存图片</Button>
 

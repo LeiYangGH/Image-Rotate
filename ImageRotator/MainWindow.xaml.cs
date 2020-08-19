@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -50,10 +51,7 @@ namespace ImageRotator
 
         private void sldAngle_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (this.originalImg == null)
-                return;
-            double angle = e.NewValue;
-            this.img.RenderTransform = new RotateTransform(angle, this.originalImg.Width / 2, this.originalImg.Height / 2);
+
             //// Create the new BitmapSource that will be used to scale the size of the source.
             //TransformedBitmap myRotatedBitmapSource = new TransformedBitmap();
 
@@ -90,7 +88,7 @@ namespace ImageRotator
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            double angle = (int)this.sldAngle.Value;
+            double angle = double.Parse(this.txtAngle.Text.Trim());
             string filename = Path.GetFileNameWithoutExtension(this.inputImageFileName);
             //SaveClipboardImageToFile(@"C:\Users\LeiYang\Downloads\rotate.bmp");
             string outputImageFileName = this.inputImageFileName.Replace(filename, filename + $"_旋转{angle}度");
@@ -119,6 +117,23 @@ namespace ImageRotator
             {
                 encoder.Save(stream);
             }
+        }
+
+        private void txtAngle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double angle = double.Parse(this.txtAngle.Text.Trim());
+            this.img.RenderTransform = new RotateTransform(angle, this.originalImg.Width / 2, this.originalImg.Height / 2);
+        }
+
+        private readonly Regex _regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text
+        private bool IsTextAllowed(string text)
+        {
+            return !_regex.IsMatch(text);
+        }
+
+        private void txtAngle_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsTextAllowed(e.Text);
         }
     }
 }
