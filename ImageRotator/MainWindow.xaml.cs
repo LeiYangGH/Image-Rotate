@@ -117,11 +117,11 @@ namespace ImageRotator
 
 
 
-        void SaveUsingEncoder(Image visual, string fileName, BitmapEncoder encoder)
+        void SaveUsingEncoder(Image imgControl, string fileName, BitmapEncoder encoder)
         {
             int hw = (int)Math.Sqrt( Math.Pow( this.originalImg.Width,2)  + Math.Pow(this.originalImg.Height,2));
             RenderTargetBitmap bitmap1 = new RenderTargetBitmap(hw, hw, 96, 96, PixelFormats.Default);
-            RenderTargetBitmap bitmap2 = new RenderTargetBitmap(hw, hw, 96, 96, PixelFormats.Default);
+            //RenderTargetBitmap bitmap2 = new RenderTargetBitmap(hw, hw, 96, 96, PixelFormats.Default);
 
             //using (Graphics bitmapBuffer = Graphics.FromImage(bitmap))
             //{
@@ -135,16 +135,18 @@ namespace ImageRotator
                 Brush visualBrush = Brushes.White;
                 drawingContext.DrawRectangle(visualBrush, null,
                   new Rect(new Point(), new Size(hw, hw)));
+                drawingContext.DrawDrawing(new ImageDrawing(imgControl.Source, new Rect(new Point(), new Size(hw, hw))));
+                drawingContext.DrawDrawing(imgControl.);
             }
 
 
             //bitmap.Render(drawingVisual);
             bitmap1.Render(drawingVisual);
-            bitmap2.Render(visual);
+            //bitmap2.Render(visual);
             BitmapFrame frame1 = BitmapFrame.Create(bitmap1);
-            //encoder.Frames.Add(frame1);
-            BitmapFrame frame2 = BitmapFrame.Create(bitmap2);
-            encoder.Frames.Add(frame2);
+            encoder.Frames.Add(frame1);
+            //BitmapFrame frame2 = BitmapFrame.Create(bitmap2);
+            //encoder.Frames.Add(frame2);
              
             using (var stream = File.Create(fileName))
             {
