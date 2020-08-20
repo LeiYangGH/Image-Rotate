@@ -122,7 +122,7 @@ namespace ImageRotator
 
         void SaveToBmp(Image visual, string fileName)
         {
-            var encoder = new BmpBitmapEncoder();
+            var encoder = new PngBitmapEncoder();
             SaveUsingEncoder(visual, fileName, encoder);
         }
 
@@ -133,23 +133,22 @@ namespace ImageRotator
             imgControl.UpdateLayout();
             //int hw = (int)Math.Sqrt(Math.Pow(this.originalImg.Width, 2) + Math.Pow(this.originalImg.Height, 2));
             //int hw = (int)Math.Sqrt(Math.Pow(this.originalImg.Width, 2) + Math.Pow(this.originalImg.Height, 2));
-            //RenderTargetBitmap bitmap1 = new RenderTargetBitmap(hw, hw, 96, 96, PixelFormats.Default);
+            //RenderTargetBitmap bitmap1 = new RenderTargetBitmap((int)imgControl.ActualWidth, (int)imgControl.ActualHeight, 96, 96, PixelFormats.Default);
             RenderTargetBitmap bitmap2 = new RenderTargetBitmap((int)imgControl.ActualWidth, (int)imgControl.ActualHeight, 96, 96, PixelFormats.Default);
-            Rect bounds =  VisualTreeHelper.GetDescendantBounds(imgControl);
+            Rect bounds = VisualTreeHelper.GetDescendantBounds(imgControl);
             //using (Graphics bitmapBuffer = Graphics.FromImage(bitmap))
             //{
             //    System.Drawing.Brush brush = new SolidBrush(System.Drawing.Color.FromArgb(127, 255, 255, 255));
             //    bitmapBuffer.FillRectangle(brush, 10, 10, 80, 80);
             //}
 
-            //DrawingVisual drawingVisual = new DrawingVisual();
-            //using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+            //DrawingVisual drawingVisual1 = new DrawingVisual();
+            //using (DrawingContext drawingContext = drawingVisual1.RenderOpen())
             //{
             //    Brush visualBrush = Brushes.White;
             //    drawingContext.DrawRectangle(visualBrush, null,
-            //      new Rect(new Point(), new Size(hw, hw)));
-            //    drawingContext.DrawDrawing(new ImageDrawing(imgControl.Source, new Rect(new Point(), new Size(hw, hw))));
-            //    drawingContext.DrawDrawing(imgControl.);
+            //      new Rect(new Point(), new Size((int)imgControl.ActualWidth, (int)imgControl.ActualHeight)));
+
             //}
 
             DrawingVisual drawingVisual2 = new DrawingVisual();
@@ -158,13 +157,14 @@ namespace ImageRotator
                 Brush visualBrush = new VisualBrush(imgControl);
                 drawingContext.DrawRectangle(visualBrush, null,
                   new Rect(new Point(), bounds.Size));
-                
+
             }
 
             //bitmap.Render(drawingVisual);
-            //bitmap1.Render(drawingVisual);
+            //bitmap1.Render(drawingVisual1);
             //bitmap2.Render(imgControl);
             bitmap2.Render(drawingVisual2);
+
             //BitmapFrame frame1 = BitmapFrame.Create(bitmap1);
             //encoder.Frames.Add(frame1);
             BitmapFrame frame2 = BitmapFrame.Create(bitmap2);
