@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:ImageRotator"
         mc:Ignorable="d"
         Icon="logo.png"
-        Title="英捷特科技 图片旋转工具" Height="450" Width="800">
+        Title="英捷特科技 图片旋转工具" Height="450" Width="800"
+        Loaded="Window_Loaded">
     <Window.Resources>
         <Style x:Key="buttonstyle" TargetType="Button">
             <Setter Property="Margin" Value="5"></Setter>
