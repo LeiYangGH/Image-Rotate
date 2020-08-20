@@ -41,8 +41,8 @@ namespace ImageRotator
             img.EndInit();
             this.originalImg = img;
             this.img.Source = img;
-            this.img.Width = this.originalImg.Width + this.originalImg.Height;
-            this.img.Height = this.originalImg.Width + this.originalImg.Height;
+            this.img.Width = this.originalImg.Width  ;
+            this.img.Height =   this.originalImg.Height;
         }
 
         private void btnOpen_Click(object sender, RoutedEventArgs e)
@@ -58,42 +58,6 @@ namespace ImageRotator
 
         }
 
-        private void sldAngle_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-
-            //// Create the new BitmapSource that will be used to scale the size of the source.
-            //TransformedBitmap myRotatedBitmapSource = new TransformedBitmap();
-
-            //// BitmapSource objects like TransformedBitmap can only have their properties
-            //// changed within a BeginInit/EndInit block.
-            //myRotatedBitmapSource.BeginInit();
-
-            //// Use the BitmapSource object defined above as the source for this BitmapSource.
-            //// This creates a "chain" of BitmapSource objects which essentially inherit from each other.
-            //myRotatedBitmapSource.Source = originalImg;
-
-            //// Flip the source 90 degrees.
-            //myRotatedBitmapSource.Transform = new RotateTransform(angle);
-            //myRotatedBitmapSource.EndInit();
-            //this.img.Source = myRotatedBitmapSource;
-            //this.rotatedImg= new TransformedBitmap(, new RotateTransform(180));
-
-
-        }
-
-
-        //public void SaveClipboardImageToFile(string filePath)
-        //{
-        //    //var image = this.originalImg;
-        //    var image = this.img.Source;
-        //    using (var fileStream = new FileStream(filePath, FileMode.Create))
-        //    {
-        //        BitmapEncoder encoder = new PngBitmapEncoder();
-        //        //encoder.Frames.Add(BitmapFrame.Create(image));
-        //        encoder.Frames.Add(BitmapFrame.Create((BitmapSource)img.Source));
-        //        encoder.Save(fileStream);
-        //    }
-        //}
 
         private void SaveRotateImage()
         {
@@ -103,7 +67,7 @@ namespace ImageRotator
                 string filename = Path.GetFileNameWithoutExtension(this.inputImageFileName);
                 //SaveClipboardImageToFile(@"C:\Users\LeiYang\Downloads\rotate.bmp");
                 string outputImageFileName = this.inputImageFileName.Replace(filename, filename + $"_旋转{angle}度");
-                SaveToBmp(this.img, outputImageFileName);
+                SaveToBmp(this.img, outputImageFileName, angle);
                 this.txtMsg.Text = $"已保存到{outputImageFileName}";
             }
             else
@@ -120,21 +84,23 @@ namespace ImageRotator
 
 
 
-        void SaveToBmp(Image visual, string fileName)
+        void SaveToBmp(Image visual, string fileName, double angle)
         {
             var encoder = new PngBitmapEncoder();
-            SaveUsingEncoder(visual, fileName, encoder);
+            SaveUsingEncoder(visual, fileName, encoder, angle);
         }
 
 
 
-        void SaveUsingEncoder(Image imgControl, string fileName, BitmapEncoder encoder)
+        void SaveUsingEncoder(Image imgControl, string fileName, BitmapEncoder encoder, double angle)
         {
             imgControl.UpdateLayout();
             //int hw = (int)Math.Sqrt(Math.Pow(this.originalImg.Width, 2) + Math.Pow(this.originalImg.Height, 2));
             //int hw = (int)Math.Sqrt(Math.Pow(this.originalImg.Width, 2) + Math.Pow(this.originalImg.Height, 2));
             //RenderTargetBitmap bitmap1 = new RenderTargetBitmap((int)imgControl.ActualWidth, (int)imgControl.ActualHeight, 96, 96, PixelFormats.Default);
-            RenderTargetBitmap bitmap2 = new RenderTargetBitmap((int)imgControl.ActualWidth, (int)imgControl.ActualHeight, 96, 96, PixelFormats.Default);
+            Size rotatedSize = GetRotatedSize(new Size(this.originalImg.Width, this.originalImg.Height), angle);
+            //RenderTargetBitmap bitmap2 = new RenderTargetBitmap((int)imgControl.ActualWidth, (int)imgControl.ActualHeight, 96, 96, PixelFormats.Default);
+            RenderTargetBitmap bitmap2 = new RenderTargetBitmap((int)rotatedSize.Width, (int)rotatedSize.Height, 96, 96, PixelFormats.Default);
             Rect bounds = VisualTreeHelper.GetDescendantBounds(imgControl);
             //using (Graphics bitmapBuffer = Graphics.FromImage(bitmap))
             //{
@@ -156,7 +122,8 @@ namespace ImageRotator
             {
                 Brush visualBrush = new VisualBrush(imgControl);
                 drawingContext.DrawRectangle(visualBrush, null,
-                  new Rect(new Point(), bounds.Size));
+                  //new Rect(new Point(), bounds.Size));
+                  new Rect(new Point(), rotatedSize));
 
             }
 
@@ -199,11 +166,21 @@ namespace ImageRotator
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 #if DEBUG
-            this.inputImageFileName = @"c:\tmp\input.bmp";
+            //this.inputImageFileName = @"c:\tmp\input.bmp";
+            this.inputImageFileName = @"c:\tmp\2.bmp";
             OpenImageFile(this.inputImageFileName);
             this.txtAngle.Text = "120";
             SaveRotateImage();
 #endif
+        }
+
+
+        private Size GetRotatedSize(Size originalSize, double angle)
+        {
+            angle = Math.PI * angle / 180;
+            int a = (int)(Math.Abs(originalSize.Width * Math.Sin(angle)) + Math.Abs(originalSize.Height * Math.Cos(angle)));
+            int b = (int)(Math.Abs(originalSize.Width * Math.Cos(angle)) + Math.Abs(originalSize.Height * Math.Sin(angle)));
+            return new Size(a, b);
         }
     }
 }
